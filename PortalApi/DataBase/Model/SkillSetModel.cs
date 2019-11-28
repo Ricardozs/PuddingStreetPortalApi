@@ -7,14 +7,18 @@ using System.Threading.Tasks;
 
 namespace PortalApi.DataBase.Model
 {
-    [Table("Competencies")]
-    public class CompetenciesModel
+    [Table("SkillSet")]
+    public class SkillSetModel
     {
         [Key]
-        [Column("CompetencyId")]
-        public int CompetencyId { get; set; }
+        [Column("SkillId")]
+        public int SKillId { get; set; }
 
         [Column("Name")]
         public string Name { get; set; }
+
+        [ForeignKey("CompetenciesModel")]
+        [Column("CompetencyId")]
+        public int CompetencyId { get; set; }
     }
 }

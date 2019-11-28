@@ -13,11 +13,11 @@ namespace PortalApi.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private readonly IDbContext DbContext;
+        private readonly ISqlRepository SqlRepository;
 
-        public UsersController(IDbContext dbContext)
+        public UsersController(ISqlRepository sqlRepository)
         {
-            DbContext = dbContext;
+            SqlRepository = sqlRepository;
         }
 
         [Route("NewUser")]
@@ -27,7 +27,7 @@ namespace PortalApi.Controllers
 
             try
             {
-                var response = DbContext.CreateUser(user);
+                var response = SqlRepository.CreateUser(user);
                 return response;
             }
             catch(Exception ex)

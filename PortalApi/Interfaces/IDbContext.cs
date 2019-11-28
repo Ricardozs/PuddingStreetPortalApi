@@ -1,4 +1,5 @@
-﻿using PortalApi.DTO;
+﻿using PortalApi.DataBase.Model;
+using PortalApi.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,11 @@ namespace PortalApi.Interfaces
 {
     public interface IDbContext
     {
-        bool CreateUser(User user);
-        bool AddCandidate(Candidate candidate);
+        bool CreateUser(UsersModel user);
+        bool AddCandidate(CandidatesModel candidate);
+        bool AddJob(JobsModel job);
+        bool AddCompetency(string name);
+        Candidate[] GetCandidatesByStatus(string status);
         bool ValidatePassword(string user, string password);
     }
 }

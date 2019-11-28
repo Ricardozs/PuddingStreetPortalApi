@@ -4,6 +4,9 @@ using PortalApi.DataBase.Model;
 using PortalApi.DTO;
 using PortalApi.Interfaces;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace PortalApi.DataBase
 {
@@ -19,43 +22,19 @@ namespace PortalApi.DataBase
 
         private DbSet<UserTypesModel> UserTypes { get; set; }
 
-        public bool CreateUser(User user)
+        private DbSet<CompetenciesModel> Competencies { get; set; }
+
+        private DbSet<JobsModel> Jobs { get; set; }
+
+        private DbSet<SkillsAssessmentsModel> SkillsAssessments { get; set; }
+
+        private DbSet<SkillSetModel> Skills { get; set; }
+
+        public bool CreateUser(UsersModel user)
         {
-
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<User, UsersModel>());
-
-            var mapper = config.CreateMapper();
-
-            var newUser = mapper.Map<UsersModel>(user);
-
             try
             {
-                Users.Add(newUser);
-
-                SaveChanges();
-
-                return true;
-            }
-            catch(Exception ex)
-            {
-                throw ex;
-            }
-        }
-        
-        public bool AddCandidate(Candidate candidate)
-        {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Candidate, CandidatesModel>());
-
-            var mapper = config.CreateMapper();
-
-            var newCandidate = mapper.Map<CandidatesModel>(candidate);
-
-            var recruiter = Candidates.Find(candidate.RecruiterId);
-            newCandidate.RecruiterId = recruiter.RecruiterId;
-            newCandidate.JobId = candidate.JobId;
-            try
-            {
-                Candidates.Add(newCandidate);
+                Users.Add(user);
 
                 SaveChanges();
 
@@ -67,6 +46,64 @@ namespace PortalApi.DataBase
             }
         }
 
+        public bool AddCandidate(CandidatesModel candidate)
+        {
+            try
+            {
+                Candidates.Add(candidate);
+
+                SaveChanges();
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool AddJob(JobsModel job)
+        {
+            try
+            {
+                Jobs.Add(job);
+                SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool AddCompetency(string name)
+        {
+            var competency = new CompetenciesModel
+            {
+                Name = name
+            };
+            try
+            {
+                Competencies.Add(competency);
+                SaveChanges();
+                return true;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public Candidate[] GetCandidatesByStatus(string status)
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Candidate, CandidatesModel>());
+
+            var mapper = config.CreateMapper();
+
+            var response = mapper.Map<CandidatesModel[], IEnumerable<Candidate>>(Candidates.Where(x => x.Status == status).ToArray());
+            return response.ToArray();
+        }
+
         public bool ValidatePassword(string user, string password)
         {
             try
@@ -74,7 +111,7 @@ namespace PortalApi.DataBase
                 var userToValid = Users.Find(user);
                 return userToValid.Password == password;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }

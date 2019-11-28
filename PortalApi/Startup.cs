@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -13,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using PortalApi.DataBase;
 using PortalApi.Interfaces;
+using PortalApi.Mapper;
 
 namespace PortalApi
 {
@@ -32,7 +34,10 @@ namespace PortalApi
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration.GetConnectionString(Defaultconnection);
-
+            var mappingConfig = new MapperConfiguration(mc => { 
+                mc.AddProfile(new MappingProfile());
+            });
+            var mapper = mappingConfig.CreateMapper();
             services.AddControllers();
             services.AddCors(options =>
             {
@@ -42,7 +47,9 @@ namespace PortalApi
                         builder.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod();
                     });
             });
+            services.AddSingleton(mapper);
             services.AddTransient<IDbContext, PortalContext>();
+            services.AddTransient<ISqlRepository, SqlRepository>();
             services.AddDbContext<PortalContext>(options => options.UseSqlServer(connection));
         }
 

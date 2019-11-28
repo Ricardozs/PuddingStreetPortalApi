@@ -22,5 +22,6 @@ namespace PortalApi.DTO
         public int RecruiterId { get; set; }
         public string Status { get; set; }
         public int JobId { get; set; }
+        public int SkillAssessmentId { get; set; }
     }
 }

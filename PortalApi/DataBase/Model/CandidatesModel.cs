@@ -47,10 +47,16 @@ namespace PortalApi.DataBase.Model
         [ForeignKey("UsersModel")]
         [Column("RecruiterId")]
         public int RecruiterId { get; set; }
+
         [Column("Status")]
         public string Status { get; set; }
+
         [ForeignKey("JobsModel")]
         [Column("JobId")]
         public int JobId { get; set; }
+
+        [ForeignKey("SkillsAssessmentsModel")]
+        [Column("SkillAssessmentId")]
+        public int SkillAssessmentId { get; set; }
     }
 }
