@@ -50,7 +50,7 @@ namespace PortalApi
             services.AddSingleton(mapper);
             services.AddTransient<IDbContext, PortalContext>();
             services.AddTransient<ISqlRepository, SqlRepository>();
-            services.AddDbContext<PortalContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<PortalContext>(options => options.UseMySQL(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

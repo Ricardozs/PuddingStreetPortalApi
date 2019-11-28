@@ -108,7 +108,7 @@ namespace PortalApi.DataBase
         {
             try
             {
-                var userToValid = Users.Find(user);
+                var userToValid = Users.FirstOrDefault(x => x.UserName == user);
                 return userToValid.Password == password;
             }
             catch (Exception ex)
