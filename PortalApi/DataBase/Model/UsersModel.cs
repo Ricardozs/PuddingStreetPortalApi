@@ -43,6 +43,7 @@ namespace PortalApi.DataBase.Model
         /// </summary>
         [ForeignKey("UserTypesModel")]
         [Column("UserTypeId")]
+        public int UserTypeId { get; set; }
         public UserTypes UserType { get; set; }
     }
 }

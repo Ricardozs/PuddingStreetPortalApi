@@ -70,7 +70,7 @@ namespace PortalApi.DataBase
                 SaveChanges();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -88,7 +88,7 @@ namespace PortalApi.DataBase
                 SaveChanges();
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
@@ -102,6 +102,32 @@ namespace PortalApi.DataBase
 
             var response = mapper.Map<CandidatesModel[], IEnumerable<Candidate>>(Candidates.Where(x => x.Status == status).ToArray());
             return response.ToArray();
+        }
+
+        public List<CompetenciesTotal> GetCompetencies()
+        {
+            var competenciesTotals = new List<CompetenciesTotal>();
+            try
+            {
+                foreach(var competency in Competencies)
+                {
+                    var newCompetency = new CompetenciesTotal
+                    {
+                        Name = competency.Name
+                    };
+                    competenciesTotals.Add(newCompetency);
+                }
+                foreach(var competency in competenciesTotals)
+                {
+                    competency.Candidates = Candidates.Where(x => x.Job.Competency.Name == competency.Name).Count();
+                    competency.Assessments = Candidates.Where(x => x.Job.Competency.Name == competency.Name && x.Status == "Assessment Completed").Count();
+                }
+                return competenciesTotals;
+            }
+            catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public bool ValidatePassword(string user, string password)

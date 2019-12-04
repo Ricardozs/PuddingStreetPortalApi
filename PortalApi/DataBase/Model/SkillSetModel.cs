@@ -20,5 +20,6 @@ namespace PortalApi.DataBase.Model
         [ForeignKey("CompetenciesModel")]
         [Column("CompetencyId")]
         public int CompetencyId { get; set; }
+        public CompetenciesModel Competecy { get; set; }
     }
 }

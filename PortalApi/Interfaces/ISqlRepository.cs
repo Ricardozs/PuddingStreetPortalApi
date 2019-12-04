@@ -12,5 +12,6 @@ namespace PortalApi.Interfaces
         bool AddCandidate(Candidate candidate);
         bool AddJob(Job job);
         bool AddCompetency(string name, Skill[] skills);
+        List<CompetenciesTotal> GetCompetencies();
     }
 }

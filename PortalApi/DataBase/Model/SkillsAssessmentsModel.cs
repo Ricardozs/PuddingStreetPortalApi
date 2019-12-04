@@ -20,5 +20,6 @@ namespace PortalApi.DataBase.Model
         [ForeignKey("SkillSetModel")]
         [Column("SkillId")]
         public int SkillId { get; set; }
+        public SkillSetModel Skill { get; set; }
     }
 }

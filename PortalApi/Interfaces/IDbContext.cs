@@ -14,6 +14,7 @@ namespace PortalApi.Interfaces
         bool AddJob(JobsModel job);
         bool AddCompetency(string name);
         Candidate[] GetCandidatesByStatus(string status);
+        List<CompetenciesTotal> GetCompetencies();
         bool ValidatePassword(string user, string password);
     }
 }

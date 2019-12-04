@@ -65,5 +65,10 @@ namespace PortalApi
             var newSkills = Mapper.Map<IEnumerable<SkillSetModel>>(skills);
             return true;
         }
+        public List<CompetenciesTotal> GetCompetencies()
+        {
+            var candidates = DbContext.GetCompetencies();
+            return candidates;
+        }
     }
 }
