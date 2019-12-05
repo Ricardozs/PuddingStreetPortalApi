@@ -30,7 +30,7 @@ namespace PortalApi.DataBase
 
         private DbSet<SkillSetModel> Skills { get; set; }
 
-        public bool CreateUser(UsersModel user)
+        public async Task<int> CreateUser(UsersModel user)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace PortalApi.DataBase
 
                 SaveChanges();
 
-                return true;
+                return await SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -46,15 +46,14 @@ namespace PortalApi.DataBase
             }
         }
 
-        public bool AddCandidate(CandidatesModel candidate)
+        public async Task<int> AddCandidate(CandidatesModel candidate)
         {
             try
             {
                 Candidates.Add(candidate);
 
-                SaveChanges();
 
-                return true;
+                return await SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -62,13 +61,12 @@ namespace PortalApi.DataBase
             }
         }
 
-        public bool AddJob(JobsModel job)
+        public async Task<int> AddJob(JobsModel job)
         {
             try
             {
                 Jobs.Add(job);
-                SaveChanges();
-                return true;
+                return await SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -76,7 +74,7 @@ namespace PortalApi.DataBase
             }
         }
 
-        public bool AddCompetency(string name)
+        public async Task<int> AddCompetency(string name)
         {
             var competency = new CompetenciesModel
             {
@@ -85,8 +83,7 @@ namespace PortalApi.DataBase
             try
             {
                 Competencies.Add(competency);
-                SaveChanges();
-                return true;
+                return await SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -104,25 +101,12 @@ namespace PortalApi.DataBase
             return response.ToArray();
         }
 
-        public List<CompetenciesTotal> GetCompetencies()
+        public async Task<List<CompetenciesTotal>> GetCompetencies()
         {
-            var competenciesTotals = new List<CompetenciesTotal>();
             try
             {
-                foreach(var competency in Competencies)
-                {
-                    var newCompetency = new CompetenciesTotal
-                    {
-                        Name = competency.Name
-                    };
-                    competenciesTotals.Add(newCompetency);
-                }
-                foreach(var competency in competenciesTotals)
-                {
-                    competency.Candidates = Candidates.Where(x => x.Job.Competency.Name == competency.Name).Count();
-                    competency.Assessments = Candidates.Where(x => x.Job.Competency.Name == competency.Name && x.Status == "Assessment Completed").Count();
-                }
-                return competenciesTotals;
+                var result = Task.Run( () => GetTotals());
+                return await result;
             }
             catch(Exception ex)
             {
@@ -130,12 +114,39 @@ namespace PortalApi.DataBase
             }
         }
 
-        public bool ValidatePassword(string user, string password)
+        private List<CompetenciesTotal> GetTotals()
+        {
+            var competenciesTotals = new List<CompetenciesTotal>();
+            try
+            {
+                foreach (var competency in Competencies)
+                {
+                    var newCompetency = new CompetenciesTotal
+                    {
+                        Name = competency.Name
+                    };
+                    competenciesTotals.Add(newCompetency);
+                }
+                foreach (var competency in competenciesTotals)
+                {
+                    competency.Candidates = Candidates.Where(x => x.Job.Competency.Name == competency.Name).Count();
+                    competency.Assessments = Candidates.Where(x => x.Job.Competency.Name == competency.Name && x.Status == "Assessment Completed").Count();
+                }
+                return competenciesTotals;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<bool> ValidatePassword(string user, string password)
         {
             try
             {
-                var userToValid = Users.FirstOrDefault(x => x.UserName == user);
-                return userToValid.Password == password;
+                var userToValid = Task.Run(() => Users.FirstOrDefault(x => x.UserName == user));
+                var response = Task.Run(() => userToValid.Result.Password == password);
+                return await response;
             }
             catch (Exception ex)
             {

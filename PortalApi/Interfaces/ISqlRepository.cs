@@ -8,10 +8,10 @@ namespace PortalApi.Interfaces
 {
     public interface ISqlRepository
     {
-        bool CreateUser(User user);
-        bool AddCandidate(Candidate candidate);
-        bool AddJob(Job job);
+        Task<bool> CreateUser(User user);
+        Task<bool> AddCandidate(Candidate candidate);
+        Task<bool> AddJob(Job job);
         bool AddCompetency(string name, Skill[] skills);
-        List<CompetenciesTotal> GetCompetencies();
+        Task<List<CompetenciesTotal>> GetCompetencies();
     }
 }

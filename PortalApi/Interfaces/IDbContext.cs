@@ -9,12 +9,12 @@ namespace PortalApi.Interfaces
 {
     public interface IDbContext
     {
-        bool CreateUser(UsersModel user);
-        bool AddCandidate(CandidatesModel candidate);
-        bool AddJob(JobsModel job);
-        bool AddCompetency(string name);
+        Task<int> CreateUser(UsersModel user);
+        Task<int> AddCandidate(CandidatesModel candidate);
+        Task<int> AddJob(JobsModel job);
+        Task<int> AddCompetency(string name);
         Candidate[] GetCandidatesByStatus(string status);
-        List<CompetenciesTotal> GetCompetencies();
-        bool ValidatePassword(string user, string password);
+        Task<List<CompetenciesTotal>> GetCompetencies();
+        Task<bool> ValidatePassword(string user, string password);
     }
 }

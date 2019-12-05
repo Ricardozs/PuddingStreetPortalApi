@@ -21,12 +21,12 @@ namespace PortalApi.Controllers
         }
         [HttpPost(Name = "Validate")]
         [Route("Validate")]
-        public bool ValidateUser(string user, string password)
+        public async Task<bool> ValidateUser(string user, string password)
         {
 
             try
             {
-                var response = DbContext.ValidatePassword(user, password);
+                var response = await DbContext.ValidatePassword(user, password);
                 return response;
             }
             catch (Exception ex)

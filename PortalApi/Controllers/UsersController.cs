@@ -22,12 +22,12 @@ namespace PortalApi.Controllers
 
         [Route("NewUser")]
         [HttpPost(Name = "NewUser")]
-        public bool NewUser(User user)
+        public async Task<bool> NewUser(User user)
         {
 
             try
             {
-                var response = SqlRepository.CreateUser(user);
+                var response = await SqlRepository.CreateUser(user);
                 return response;
             }
             catch(Exception ex)

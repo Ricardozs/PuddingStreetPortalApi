@@ -21,38 +21,41 @@ namespace PortalApi
             Mapper = mapper;
         }
 
-        public bool CreateUser(User user)
+        public async Task<bool> CreateUser(User user)
         {
 
             var newUser = Mapper.Map<UsersModel>(user);
 
             try
             {
-                return DbContext.CreateUser(newUser);
+                var response = await DbContext.CreateUser(newUser);
+                return response == 1;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public bool AddCandidate(Candidate candidate)
+        public async Task<bool> AddCandidate(Candidate candidate)
         {
             var newCandidate = Mapper.Map<CandidatesModel>(candidate);
             try
             {
-                return DbContext.AddCandidate(newCandidate);
+                var response = await DbContext.AddCandidate(newCandidate);
+                return response == 1;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
-        public bool AddJob(Job job)
+        public async Task<bool> AddJob(Job job)
         {
             var newJob = Mapper.Map<JobsModel>(job);
             try
             {
-                return DbContext.AddJob(newJob);
+                var response = await DbContext.AddJob(newJob);
+                return response == 1;
             }
             catch (Exception ex)
             {
@@ -65,9 +68,9 @@ namespace PortalApi
             var newSkills = Mapper.Map<IEnumerable<SkillSetModel>>(skills);
             return true;
         }
-        public List<CompetenciesTotal> GetCompetencies()
+        public async Task<List<CompetenciesTotal>> GetCompetencies()
         {
-            var candidates = DbContext.GetCompetencies();
+            var candidates = await DbContext.GetCompetencies();
             return candidates;
         }
     }

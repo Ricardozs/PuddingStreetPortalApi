@@ -22,11 +22,12 @@ namespace PortalApi.Controllers
 
         [Route("GetCompetencies")]
         [HttpGet(Name = "GetCompetencies")]
-        public CompetenciesTotal[] GetCompetencies()
+        public async Task<CompetenciesTotal[]> GetCompetencies()
         {
             try
             {
-                return SqlRepository.GetCompetencies().ToArray();
+                var result = await SqlRepository.GetCompetencies();
+                return result.ToArray();
             }
             catch(Exception ex)
             {
