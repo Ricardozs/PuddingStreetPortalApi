@@ -11,7 +11,7 @@ namespace PortalApi.Interfaces
     {
         Task<int> CreateUser(UsersModel user);
         Task<int> AddCandidate(CandidatesModel candidate);
-        Task<int> AddJob(JobsModel job);
+        Task<int> AddJob(JobsModel job, string competencyName);
         Task<int> AddCompetency(string name);
         Candidate[] GetCandidatesByStatus(string status);
         Task<List<CompetenciesTotal>> GetCompetencies();

@@ -1,16 +1,15 @@
-﻿using PortalApi.DTO.Enum;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PortalApi.DTO
+namespace PortalApi.Requests
 {
-    public class Job
+    public class JobRequest
     {
         public string Description { get; set; }
         public string Client { get; set; }
-        public RecruitingType RecruitingType { get; set; }
+        public string RecruitingType { get; set; }
         public string CompetencyName { get; set; }
     }
 }

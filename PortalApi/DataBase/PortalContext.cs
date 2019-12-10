@@ -61,10 +61,12 @@ namespace PortalApi.DataBase
             }
         }
 
-        public async Task<int> AddJob(JobsModel job)
+        public async Task<int> AddJob(JobsModel job, string competencyName)
         {
             try
             {
+                job.Competency = Competencies.FirstOrDefault(x => x.Name == competencyName);
+                job.CompetencyId = job.Competency.CompetencyId;
                 Jobs.Add(job);
                 return await SaveChangesAsync();
             }

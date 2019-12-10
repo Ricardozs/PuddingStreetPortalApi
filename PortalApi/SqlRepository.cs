@@ -54,7 +54,7 @@ namespace PortalApi
             var newJob = Mapper.Map<JobsModel>(job);
             try
             {
-                var response = await DbContext.AddJob(newJob);
+                var response = await DbContext.AddJob(newJob, job.CompetencyName);
                 return response == 1;
             }
             catch (Exception ex)
