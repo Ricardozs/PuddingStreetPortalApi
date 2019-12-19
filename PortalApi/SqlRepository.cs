@@ -63,10 +63,10 @@ namespace PortalApi
             }
         }
 
-        public bool AddCompetency(string name, Skill[] skills)
+        public async Task<bool> AddCompetency(string name)
         {
-            var newSkills = Mapper.Map<IEnumerable<SkillSetModel>>(skills);
-            return true;
+            var response = await DbContext.AddCompetency(name);
+            return response == 1;
         }
         public async Task<List<CompetenciesTotal>> GetCompetencies()
         {
@@ -78,6 +78,6 @@ namespace PortalApi
         {
             var result = await DbContext.ValidatePassword(logInData);
             return result;
-        };
+        }
     }
 }

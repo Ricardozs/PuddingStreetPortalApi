@@ -28,5 +28,7 @@ namespace PortalApi.DataBase.Model
         [Column("CompetencyId")]
         public int CompetencyId { get; set; }
         public CompetenciesModel Competency { get; set; }
+        public ICollection<CandidatesModel> Candidates { get; set; }
+        public ICollection<SkillSetModel> Skills{ get; set; }
     }
 }

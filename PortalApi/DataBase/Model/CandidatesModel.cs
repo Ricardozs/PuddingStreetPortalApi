@@ -47,6 +47,7 @@ namespace PortalApi.DataBase.Model
         [ForeignKey("UsersModel")]
         [Column("RecruiterId")]
         public int RecruiterId { get; set; }
+        public UsersModel Recruiter { get; set; }
 
         [Column("Status")]
         public string Status { get; set; }

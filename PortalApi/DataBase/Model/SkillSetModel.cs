@@ -16,10 +16,11 @@ namespace PortalApi.DataBase.Model
 
         [Column("Name")]
         public string Name { get; set; }
+        [Column("JobId")]
+        public int JobId { get; set; }
+        public JobsModel Job { get; set; }
 
-        [ForeignKey("CompetenciesModel")]
-        [Column("CompetencyId")]
-        public int CompetencyId { get; set; }
-        public CompetenciesModel Competecy { get; set; }
+        public ICollection<SkillsAssessmentsModel> Assessments { get; set; }
+        
     }
 }

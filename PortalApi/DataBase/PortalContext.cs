@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using PortalApi.DataBase.Model;
 using PortalApi.DTO;
+using PortalApi.DTO.Enum;
 using PortalApi.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,17 @@ namespace PortalApi.DataBase
     {
         public PortalContext(DbContextOptions options) : base(options)
         {
+
+        }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<UserTypesModel>().HasMany(x => x.Users).WithOne(x => x.UserType).HasForeignKey(x => x.UserTypeId);
+            builder.Entity<UsersModel>().HasMany(x => x.Candidates).WithOne(x => x.Recruiter).HasForeignKey(x => x.RecruiterId);
+            builder.Entity<CompetenciesModel>().HasMany(x => x.Jobs).WithOne(x => x.Competency).HasForeignKey(x => x.CompetencyId);
+            builder.Entity<JobsModel>().HasMany(x => x.Candidates).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
+            builder.Entity<JobsModel>().HasMany(x => Skills).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
+            builder.Entity<SkillSetModel>().HasMany(x => x.Assessments).WithOne(x => x.Skill).HasForeignKey(x => x.SkillId);
 
         }
         private DbSet<UsersModel> Users { get; set; }
@@ -146,6 +158,8 @@ namespace PortalApi.DataBase
         {
             try
             {
+                var test1 = Users.FirstOrDefault(x => x.UserName == logInData.User);
+                var test2 = test1.Password == logInData.Password;
                 var userToValid = Task.Run(() => Users.FirstOrDefault(x => x.UserName == logInData.User));
                 var response = Task.Run(() => userToValid.Result.Password == logInData.Password);
                 return await response;
