@@ -73,5 +73,11 @@ namespace PortalApi
             var candidates = await DbContext.GetCompetencies();
             return candidates;
         }
+
+        public async Task<bool> ValidatePassword(LogInData logInData)
+        {
+            var result = await DbContext.ValidatePassword(logInData);
+            return result;
+        };
     }
 }

@@ -13,20 +13,20 @@ namespace PortalApi.Controllers
     [ApiController]
     public class LogInController : ControllerBase
     {
-        private readonly IDbContext DbContext;
+        private readonly ISqlRepository SqlRepository;
 
-        public LogInController(IDbContext dbContext)
+        public LogInController(ISqlRepository sqlRepository)
         {
-            DbContext = dbContext;
+            SqlRepository = sqlRepository;
         }
         [HttpPost(Name = "Validate")]
         [Route("Validate")]
-        public async Task<bool> ValidateUser(string user, string password)
+        public async Task<bool> ValidateUser([FromBody]LogInData logInData)
         {
 
             try
             {
-                var response = await DbContext.ValidatePassword(user, password);
+                var response = await SqlRepository.ValidatePassword(logInData);
                 return response;
             }
             catch (Exception ex)

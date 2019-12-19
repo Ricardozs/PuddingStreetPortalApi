@@ -142,12 +142,12 @@ namespace PortalApi.DataBase
             }
         }
 
-        public async Task<bool> ValidatePassword(string user, string password)
+        public async Task<bool> ValidatePassword(LogInData logInData)
         {
             try
             {
-                var userToValid = Task.Run(() => Users.FirstOrDefault(x => x.UserName == user));
-                var response = Task.Run(() => userToValid.Result.Password == password);
+                var userToValid = Task.Run(() => Users.FirstOrDefault(x => x.UserName == logInData.User));
+                var response = Task.Run(() => userToValid.Result.Password == logInData.Password);
                 return await response;
             }
             catch (Exception ex)
