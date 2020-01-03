@@ -1,4 +1,5 @@
 ﻿using PortalApi.DTO.Enum;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -19,6 +20,7 @@ namespace PortalApi.DataBase.Model
         /// </summary>
         [Column("Type")]
         public UserTypes Type { get; set; }
+        public ICollection<UsersModel> Users { get; set; }
 
     }
 }

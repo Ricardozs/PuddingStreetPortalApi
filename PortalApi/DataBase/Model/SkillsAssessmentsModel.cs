@@ -21,5 +21,6 @@ namespace PortalApi.DataBase.Model
         [Column("SkillId")]
         public int SkillId { get; set; }
         public SkillSetModel Skill { get; set; }
+        public ICollection<CandidatesModel> Candidates { get; set; }
     }
 }

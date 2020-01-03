@@ -34,5 +34,20 @@ namespace PortalApi.Controllers
                 throw ex;
             }
         }
+
+        [Route("AddCompetency")]
+        [HttpPost(Name = "AddCompetency")]
+        public async Task<bool> AddCompetency([FromBody] string name)
+        {
+            try
+            {
+                var result = await SqlRepository.AddCompetency(name);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

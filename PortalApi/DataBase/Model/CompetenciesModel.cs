@@ -16,5 +16,6 @@ namespace PortalApi.DataBase.Model
 
         [Column("Name")]
         public string Name { get; set; }
+        public ICollection<JobsModel> Jobs { get; set; }
     }
 }
