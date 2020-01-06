@@ -39,5 +39,21 @@ namespace PortalApi.Controllers
                 throw ex;
             }
         }
+
+        [Route("GetJobs")]
+        [HttpGet(Name = "GetJobs")]
+        public async Task<string[]> GetJobs()
+        {
+            var jobs = new List<string>();
+            try
+            {
+                jobs = await SqlRepository.GetJobs();
+                return jobs.ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }

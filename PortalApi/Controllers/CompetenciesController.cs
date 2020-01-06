@@ -37,11 +37,11 @@ namespace PortalApi.Controllers
 
         [Route("AddCompetency")]
         [HttpPost(Name = "AddCompetency")]
-        public async Task<bool> AddCompetency([FromBody] string name)
+        public async Task<bool> AddCompetency([FromBody] Competency competency)
         {
             try
             {
-                var result = await SqlRepository.AddCompetency(name);
+                var result = await SqlRepository.AddCompetency(competency.Name);
                 return result;
             }
             catch (Exception ex)

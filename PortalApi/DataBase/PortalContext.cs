@@ -13,21 +13,7 @@ namespace PortalApi.DataBase
 {
     public class PortalContext : DbContext, IDbContext
     {
-        public PortalContext(DbContextOptions options) : base(options)
-        {
-
-        }
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-            builder.Entity<UserTypesModel>().HasMany(x => x.Users).WithOne(x => x.UserType).HasForeignKey(x => x.UserTypeId);
-            builder.Entity<UsersModel>().HasMany(x => x.Candidates).WithOne(x => x.Recruiter).HasForeignKey(x => x.RecruiterId);
-            builder.Entity<CompetenciesModel>().HasMany(x => x.Jobs).WithOne(x => x.Competency).HasForeignKey(x => x.CompetencyId);
-            builder.Entity<JobsModel>().HasMany(x => x.Candidates).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
-            builder.Entity<JobsModel>().HasMany(x => x.Skills).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
-            builder.Entity<SkillSetModel>().HasMany(x => x.Assessments).WithOne(x => x.Skill).HasForeignKey(x => x.SkillId);
-
-        }
+        #region Private Properties
         private DbSet<UsersModel> Users { get; set; }
 
         private DbSet<CandidatesModel> Candidates { get; set; }
@@ -41,7 +27,30 @@ namespace PortalApi.DataBase
         private DbSet<SkillsAssessmentsModel> SkillsAssessments { get; set; }
 
         private DbSet<SkillSetModel> Skills { get; set; }
+        #endregion
 
+        #region Constructor
+        public PortalContext(DbContextOptions options) : base(options)
+        {
+
+        }
+        #endregion
+
+        #region On model creating
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<UserTypesModel>().HasMany(x => x.Users).WithOne(x => x.UserType).HasForeignKey(x => x.UserTypeId);
+            builder.Entity<UsersModel>().HasMany(x => x.Candidates).WithOne(x => x.Recruiter).HasForeignKey(x => x.RecruiterId);
+            builder.Entity<CompetenciesModel>().HasMany(x => x.Jobs).WithOne(x => x.Competency).HasForeignKey(x => x.CompetencyId);
+            builder.Entity<JobsModel>().HasMany(x => x.Candidates).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
+            builder.Entity<JobsModel>().HasMany(x => x.Skills).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
+            builder.Entity<SkillSetModel>().HasMany(x => x.Assessments).WithOne(x => x.Skill).HasForeignKey(x => x.SkillId);
+
+        }
+        #endregion
+
+        #region Add or create methods
         public async Task<int> CreateUser(UsersModel user)
         {
             try
@@ -104,7 +113,9 @@ namespace PortalApi.DataBase
                 throw ex;
             }
         }
+        #endregion
 
+        #region Get methods
         public Candidate[] GetCandidatesByStatus(string status)
         {
             var config = new MapperConfiguration(cfg => cfg.CreateMap<Candidate, CandidatesModel>());
@@ -127,7 +138,37 @@ namespace PortalApi.DataBase
                 throw ex;
             }
         }
+        public async Task<List<JobsModel>> GetJobs()
+        {
+            try
+            {
+                var result = Task.Run(() => GetJobsList());
+                return await result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        #endregion
 
+        public async Task<bool> ValidatePassword(LogInData logInData)
+        {
+            try
+            {
+                var test1 = Users.FirstOrDefault(x => x.UserName == logInData.User);
+                var test2 = test1.Password == logInData.Password;
+                var userToValid = Task.Run(() => Users.FirstOrDefault(x => x.UserName == logInData.User));
+                var response = Task.Run(() => userToValid.Result.Password == logInData.Password);
+                return await response;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        #region Private helper methods
         private List<CompetenciesTotal> GetTotals()
         {
             var competenciesTotals = new List<CompetenciesTotal>();
@@ -154,20 +195,19 @@ namespace PortalApi.DataBase
             }
         }
 
-        public async Task<bool> ValidatePassword(LogInData logInData)
+        private List<JobsModel> GetJobsList()
         {
+            var jobs = new List<JobsModel>();
             try
             {
-                var test1 = Users.FirstOrDefault(x => x.UserName == logInData.User);
-                var test2 = test1.Password == logInData.Password;
-                var userToValid = Task.Run(() => Users.FirstOrDefault(x => x.UserName == logInData.User));
-                var response = Task.Run(() => userToValid.Result.Password == logInData.Password);
-                return await response;
+                jobs = Jobs.ToList();
+                return jobs;
             }
             catch (Exception ex)
             {
                 throw ex;
             }
         }
+        #endregion
     }
 }

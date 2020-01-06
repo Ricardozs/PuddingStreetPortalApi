@@ -15,6 +15,7 @@ namespace PortalApi.Interfaces
         Task<int> AddCompetency(string name);
         Candidate[] GetCandidatesByStatus(string status);
         Task<List<CompetenciesTotal>> GetCompetencies();
+        Task<List<JobsModel>> GetJobs();
         Task<bool> ValidatePassword(LogInData logInData);
     }
 }

@@ -13,6 +13,7 @@ namespace PortalApi.Interfaces
         Task<bool> AddJob(Job job);
         Task<bool> AddCompetency(string name);
         Task<List<CompetenciesTotal>> GetCompetencies();
+        Task<List<string>> GetJobs();
         Task<bool> ValidatePassword(LogInData logInData);
     }
 }

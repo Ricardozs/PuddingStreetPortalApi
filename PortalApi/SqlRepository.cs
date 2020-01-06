@@ -12,15 +12,20 @@ namespace PortalApi
 {
     public class SqlRepository : ISqlRepository
     {
-        IDbContext DbContext;
-        IMapper Mapper;
+        #region Private Properties
+        private readonly IDbContext DbContext;
+        private readonly IMapper Mapper;
+        #endregion
 
+        #region Constructor
         public SqlRepository(IDbContext dbContext, IMapper mapper)
         {
             DbContext = dbContext;
             Mapper = mapper;
         }
+        #endregion
 
+        #region Add or create methods
         public async Task<bool> CreateUser(User user)
         {
 
@@ -77,16 +82,27 @@ namespace PortalApi
             var response = await DbContext.AddCompetency(name);
             return response == 1;
         }
+        #endregion
+
+        #region Get methods
         public async Task<List<CompetenciesTotal>> GetCompetencies()
         {
             var candidates = await DbContext.GetCompetencies();
             return candidates;
         }
+        public async Task<List<string>> GetJobs()
+        {
+            var jobs = await DbContext.GetJobs();
+            return jobs.Select(x => x.Description).ToList();
+        }
+        #endregion
 
         public async Task<bool> ValidatePassword(LogInData logInData)
         {
             var result = await DbContext.ValidatePassword(logInData);
             return result;
         }
+
+
     }
 }
