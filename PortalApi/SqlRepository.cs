@@ -52,10 +52,19 @@ namespace PortalApi
         public async Task<bool> AddJob(Job job)
         {
             var newJob = Mapper.Map<JobsModel>(job);
+            newJob.Skills = new List<SkillSetModel>();
             try
             {
+                foreach(var skill in job.Skills)
+                {
+                    var newSkill = new SkillSetModel
+                    {
+                        Name = skill.Name
+                    };
+                    newJob.Skills.Add(newSkill);
+                }
                 var response = await DbContext.AddJob(newJob, job.CompetencyName);
-                return response == 1;
+                return response == 6;
             }
             catch (Exception ex)
             {

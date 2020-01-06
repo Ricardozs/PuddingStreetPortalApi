@@ -29,6 +29,6 @@ namespace PortalApi.DataBase.Model
         public int CompetencyId { get; set; }
         public CompetenciesModel Competency { get; set; }
         public ICollection<CandidatesModel> Candidates { get; set; }
-        public ICollection<SkillSetModel> Skills{ get; set; }
+        public List<SkillSetModel> Skills{ get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace PortalApi.DTO
         public string Client { get; set; }
         public RecruitingType RecruitingType { get; set; }
         public string CompetencyName { get; set; }
+        public Skill[] Skills { get; set; }
     }
 }

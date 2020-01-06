@@ -14,7 +14,7 @@ namespace PortalApi.DataBase.Model
         [Column("SkillId")]
         public int SKillId { get; set; }
 
-        [Column("Name")]
+        [Column("SkillName")]
         public string Name { get; set; }
         [Column("JobId")]
         public int JobId { get; set; }

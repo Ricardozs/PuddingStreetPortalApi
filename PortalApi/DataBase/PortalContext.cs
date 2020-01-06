@@ -24,7 +24,7 @@ namespace PortalApi.DataBase
             builder.Entity<UsersModel>().HasMany(x => x.Candidates).WithOne(x => x.Recruiter).HasForeignKey(x => x.RecruiterId);
             builder.Entity<CompetenciesModel>().HasMany(x => x.Jobs).WithOne(x => x.Competency).HasForeignKey(x => x.CompetencyId);
             builder.Entity<JobsModel>().HasMany(x => x.Candidates).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
-            builder.Entity<JobsModel>().HasMany(x => Skills).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
+            builder.Entity<JobsModel>().HasMany(x => x.Skills).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
             builder.Entity<SkillSetModel>().HasMany(x => x.Assessments).WithOne(x => x.Skill).HasForeignKey(x => x.SkillId);
 
         }
@@ -78,7 +78,7 @@ namespace PortalApi.DataBase
             try
             {
                 job.Competency = Competencies.FirstOrDefault(x => x.Name == competencyName);
-                job.CompetencyId = job.Competency.CompetencyId;
+                Skills.AddRange(job.Skills);
                 Jobs.Add(job);
                 return await SaveChangesAsync();
             }

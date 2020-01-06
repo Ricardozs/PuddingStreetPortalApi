@@ -11,5 +11,6 @@ namespace PortalApi.Requests
         public string Client { get; set; }
         public string RecruitingType { get; set; }
         public string CompetencyName { get; set; }
+        public string[] Skills { get; set; }
     }
 }
