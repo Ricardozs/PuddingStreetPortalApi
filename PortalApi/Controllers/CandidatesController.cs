@@ -5,10 +5,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PortalApi.DTO;
+using PortalApi.Interfaces;
+using PortalApi.Requests;
 
 namespace PortalApi.Controllers
 {
@@ -16,13 +20,29 @@ namespace PortalApi.Controllers
     [Route("api/candidates")]
     public class CandidatesController : ControllerBase
     {
-        
+        private readonly ISqlRepository SqlRepository;
+        private readonly IMapper Mapper;
+
+        public CandidatesController(ISqlRepository sqlRepository, IMapper mapper)
+        {
+            SqlRepository = sqlRepository;
+            Mapper = mapper;
+        }
 
         [HttpPost(Name = "AddCandidate")]
         [Route("AddCandidate")]
-        public bool UploadPdf()
+        public async Task<bool> AddCandidate(CandidateRequest candidate)
         {
-            return true;
+            try
+            {
+                var newCandidate = Mapper.Map<Candidate>(candidate);
+                var result = await SqlRepository.AddCandidate(newCandidate);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }

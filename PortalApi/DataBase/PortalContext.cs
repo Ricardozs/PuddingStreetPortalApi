@@ -46,7 +46,9 @@ namespace PortalApi.DataBase
             builder.Entity<JobsModel>().HasMany(x => x.Candidates).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
             builder.Entity<JobsModel>().HasMany(x => x.Skills).WithOne(x => x.Job).HasForeignKey(x => x.JobId);
             builder.Entity<SkillSetModel>().HasMany(x => x.Assessments).WithOne(x => x.Skill).HasForeignKey(x => x.SkillId);
-
+            builder.Entity<JobsModel>().Property(x => x.RecruitingType).HasConversion(x => x.ToString(), x => (RecruitingType)Enum.Parse(typeof(RecruitingType), x));
+            builder.Entity<CandidatesModel>().Property(x => x.Education).HasConversion(x => x.ToString(), x => (HighestEducation)Enum.Parse(typeof(HighestEducation), x));
+            builder.Entity<CandidatesModel>().Property(x => x.LegalStatus).HasConversion(x => x.ToString(), x => (LegalStatus)Enum.Parse(typeof(LegalStatus), x));
         }
         #endregion
 
@@ -67,13 +69,13 @@ namespace PortalApi.DataBase
             }
         }
 
-        public async Task<int> AddCandidate(CandidatesModel candidate)
+        public async Task<int> AddCandidate(CandidatesModel candidate, string jobDescription, string recruiter)
         {
             try
             {
+                candidate.Job = Jobs.FirstOrDefault(x => x.Description == jobDescription);
+                candidate.Recruiter = Users.FirstOrDefault(x => x.Name == recruiter);
                 Candidates.Add(candidate);
-
-
                 return await SaveChangesAsync();
             }
             catch (Exception ex)
@@ -150,6 +152,18 @@ namespace PortalApi.DataBase
                 throw ex;
             }
         }
+        public async Task<List<CompetenciesModel>> GetCompetenciesNames()
+        {
+            try
+            {
+                var result = Task.Run(() => GetCompetenciesList());
+                return await result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         #endregion
 
         public async Task<bool> ValidatePassword(LogInData logInData)
@@ -202,6 +216,20 @@ namespace PortalApi.DataBase
             {
                 jobs = Jobs.ToList();
                 return jobs;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        private List<CompetenciesModel> GetCompetenciesList()
+        {
+            var competencies = new List<CompetenciesModel>();
+            try
+            {
+                competencies = Competencies.ToList();
+                return competencies;
             }
             catch (Exception ex)
             {

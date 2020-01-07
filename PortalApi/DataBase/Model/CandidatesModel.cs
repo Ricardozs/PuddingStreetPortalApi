@@ -1,5 +1,6 @@
 ﻿using PortalApi.DTO.Enum;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,7 +11,7 @@ namespace PortalApi.DataBase.Model
     {
         [Key]
         [Column("CandidateId")]
-        public string CandidateId { get; set; }
+        public int CandidateId { get; set; }
 
         [Column("Name")]
         public string Name { get; set; }
@@ -52,14 +53,17 @@ namespace PortalApi.DataBase.Model
         [Column("Status")]
         public string Status { get; set; }
 
+        [Column("Resume")]
+        public string Resume { get; set; }
+
+        [Column("Date")]
+        public DateTime Date { get; set; }
+
         [ForeignKey("JobsModel")]
         [Column("JobId")]
         public int JobId { get; set; }
         public JobsModel Job { get; set; }
+        public ICollection<SkillsAssessmentsModel> Assesments { get; set; }
 
-        [ForeignKey("SkillsAssessmentsModel")]
-        [Column("SkillAssessmentId")]
-        public int SkillAssessmentId { get; set; }
-        public SkillsAssessmentsModel skillsAssessments { get; set; }
     }
 }

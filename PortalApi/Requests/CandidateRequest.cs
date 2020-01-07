@@ -18,9 +18,15 @@ namespace PortalApi.Requests
         public string LegalStatus { get; set; }
         public DateTime WorkPermitExpiration { get; set; }
         public string Notes { get; set; }
-        public int RecruiterId { get; set; }
+        public string Recruiter { get; set; }
+        public string Resume { get; set; }
+        public DateTime Date { get; set; }
         public string Status { get; set; }
-        public int JobId { get; set; }
-        public int SkillAssessmentId { get; set; }
+        public string Job { get; set; }
+        public int Skill1 { get; set; }
+        public int Skill2 { get; set; }
+        public int Skill3 { get; set; }
+        public int Skill4 { get; set; }
+        public int Skill5 { get; set; }
     }
 }

@@ -1,42 +1,62 @@
-﻿using System;
-using System.Web;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
+using System.Text.RegularExpressions;
 
-namespace PortalApi.Controllers
+namespace Angular5FileUpload.Controllers
 {
-    [Route("api/resumes")]
-    [ApiController]
-    public class ResumesController : ControllerBase
+    [Produces("application/json")]
+    [Route("api/[controller]")]
+    public class UploadController : Controller
     {
-        //[HttpPost(Name = "UploadResume")]
-        //[Route("UploadResume")]
-        //public async Task<IActionResult> OnPostUploadAsync(List<IFormFile> files)
-        //{
-        //    var size = files.Sum(f => f.Length);
+        private IWebHostEnvironment _hostingEnvironment;
 
-        //    foreach (var formFile in files)
-        //    {
-        //        if (formFile.Length > 0)
-        //        {
-        //            var filePath = Path.GetTempFileName();
+        public UploadController(IWebHostEnvironment hostingEnvironment)
+        {
+            _hostingEnvironment = hostingEnvironment;
+        }
 
-        //            using (var stream = System.IO.File.Create(filePath))
-        //            {
-        //                await formFile.CopyToAsync(stream);
-        //            }
-        //        }
-        //    }
+        [HttpPost, DisableRequestSizeLimit]
+        public IActionResult Upload()
+        {
+            try
+            {
+                var file = Request.Form.Files[0];
+                var name = "";
+                foreach(var key in Request.Form.Keys)
+                {
+                    name += key;
+                }
+                name = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(name.ToLower());
+                name = name.Replace(" ", string.Empty);
+                var folderName = Path.Combine("Resumes");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-        //    // Process uploaded files
-        //    // Don't rely on or trust the FileName property without validation.
+                if (file.Length > 0)
+                {
+                    var fileName = string.Concat(name + "Resume.pdf");
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName);
 
-        //    return Ok(new { count = files.Count, size, filePath });
-        //}
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    return Ok(new { dbPath });
+                }
+                else
+                {
+                    return BadRequest();
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Internal server error");
+            }
+        }
     }
 }

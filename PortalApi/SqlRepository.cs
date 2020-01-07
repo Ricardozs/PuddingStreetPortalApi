@@ -46,7 +46,7 @@ namespace PortalApi
             var newCandidate = Mapper.Map<CandidatesModel>(candidate);
             try
             {
-                var response = await DbContext.AddCandidate(newCandidate);
+                var response = await DbContext.AddCandidate(newCandidate, candidate.Job, candidate.Recruiter);
                 return response == 1;
             }
             catch (Exception ex)
@@ -94,6 +94,11 @@ namespace PortalApi
         {
             var jobs = await DbContext.GetJobs();
             return jobs.Select(x => x.Description).ToList();
+        }
+        public async Task<List<string>> GetCompetenciesNames()
+        {
+            var jobs = await DbContext.GetCompetenciesNames();
+            return jobs.Select(x => x.Name).ToList();
         }
         #endregion
 

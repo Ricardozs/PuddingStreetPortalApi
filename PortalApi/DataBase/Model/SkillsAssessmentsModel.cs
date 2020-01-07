@@ -21,6 +21,10 @@ namespace PortalApi.DataBase.Model
         [Column("SkillId")]
         public int SkillId { get; set; }
         public SkillSetModel Skill { get; set; }
-        public ICollection<CandidatesModel> Candidates { get; set; }
+
+        [ForeignKey("CandidatesModel")]
+        [Column("CandidateId")]
+        public int CandidateId { get; set; }
+        public CandidatesModel Candidate { get; set; }
     }
 }

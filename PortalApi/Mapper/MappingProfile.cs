@@ -14,7 +14,7 @@ namespace PortalApi.Mapper
     {
         public MappingProfile()
         {
-            CreateMap<Candidate, CandidatesModel>().ReverseMap();
+            CreateMap<Candidate, CandidatesModel>().ForMember(m => m.Job, opt => opt.Ignore()).ForMember(m => m.Recruiter, opt => opt.Ignore()).ReverseMap();
             CreateMap<CandidateRequest, Candidate>().
                 ForMember(m => m.HighestEducation, opt => opt.MapFrom
                     (src => src.HighestEducation == "diploma" ? HighestEducation.Diploma : 

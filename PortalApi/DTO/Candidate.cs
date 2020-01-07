@@ -18,10 +18,12 @@ namespace PortalApi.DTO
         public HighestEducation HighestEducation { get; set; }
         public LegalStatus LegalStatus { get; set; }
         public DateTime WorkPermitExpiration { get; set; }
-        public string Notes { get; set; }
-        public int RecruiterId { get; set; }
         public string Status { get; set; }
-        public int JobId { get; set; }
+        public string Notes { get; set; }
+        public string Recruiter { get; set; }
+        public string Resume { get; set; }
+        public DateTime Date { get; set; }
+        public string Job { get; set; }
         public int SkillAssessmentId { get; set; }
     }
 }
