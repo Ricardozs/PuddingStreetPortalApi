@@ -90,15 +90,24 @@ namespace PortalApi
             var candidates = await DbContext.GetCompetencies();
             return candidates;
         }
+
         public async Task<List<string>> GetJobs()
         {
             var jobs = await DbContext.GetJobs();
             return jobs.Select(x => x.Description).ToList();
         }
+
         public async Task<List<string>> GetCompetenciesNames()
         {
             var jobs = await DbContext.GetCompetenciesNames();
             return jobs.Select(x => x.Name).ToList();
+        }
+
+        public async Task<List<Candidate>> GetCandidates()
+        {
+            var candidatesModel = await DbContext.GetCandidates();
+            var candidates = Mapper.Map<IEnumerable<Candidate>>(candidatesModel.ToArray());
+            return candidates.ToList();
         }
         #endregion
 

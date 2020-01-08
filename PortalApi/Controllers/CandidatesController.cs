@@ -45,6 +45,21 @@ namespace PortalApi.Controllers
             }
         }
 
+        [HttpPost(Name = "GetCandidates")]
+        [Route("GetCandidates")]
+        public async Task<Candidate[]> GetCandidates()
+        {
+            try
+            {
+                var candidates = await SqlRepository.GetCandidates();
+                return candidates.ToArray();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
     
 }

@@ -118,14 +118,17 @@ namespace PortalApi.DataBase
         #endregion
 
         #region Get methods
-        public Candidate[] GetCandidatesByStatus(string status)
+        public async Task<List<CandidatesModel>> GetCandidates()
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Candidate, CandidatesModel>());
-
-            var mapper = config.CreateMapper();
-
-            var response = mapper.Map<CandidatesModel[], IEnumerable<Candidate>>(Candidates.Where(x => x.Status == status).ToArray());
-            return response.ToArray();
+            try
+            {
+                var result = Task.Run(() => GetCandidatesList());
+                return await result;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<List<CompetenciesTotal>> GetCompetencies()
@@ -230,6 +233,19 @@ namespace PortalApi.DataBase
             {
                 competencies = Competencies.ToList();
                 return competencies;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private List<CandidatesModel> GetCandidatesList()
+        {
+            var candidates = new List<CandidatesModel>();
+            try
+            {
+                candidates = Candidates.Where(x => x.Status != "completed").OrderBy(x => x.Status).ToList();
+                return candidates;
             }
             catch (Exception ex)
             {
