@@ -45,7 +45,7 @@ namespace PortalApi.Controllers
             }
         }
 
-        [HttpPost(Name = "GetCandidates")]
+        [HttpGet(Name = "GetCandidates")]
         [Route("GetCandidates")]
         public async Task<Candidate[]> GetCandidates()
         {
