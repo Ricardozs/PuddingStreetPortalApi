@@ -105,9 +105,21 @@ namespace PortalApi
 
         public async Task<List<Candidate>> GetCandidates()
         {
-            var candidatesModel = await DbContext.GetCandidates();
-            var candidates = Mapper.Map<IEnumerable<Candidate>>(candidatesModel.ToArray());
-            return candidates.ToList();
+            try
+            {
+                var candidatesModel = await DbContext.GetCandidates();
+                var candidates = Mapper.Map<List<Candidate>>(candidatesModel);
+                foreach(var candidate in candidates)
+                {
+                    candidate.Job = candidatesModel.FirstOrDefault(x => x.Name == candidate.Name).Job.Description;
+                    candidate.Recruiter = candidatesModel.FirstOrDefault(x => x.Name == candidate.Name).Recruiter.Name;
+                }
+                return candidates.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
         #endregion
 

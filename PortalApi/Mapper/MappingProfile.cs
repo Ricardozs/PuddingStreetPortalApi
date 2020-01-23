@@ -34,8 +34,8 @@ namespace PortalApi.Mapper
                 ForMember(m => m.Skills, opt => opt.Ignore());
             CreateMap<User, UsersModel>().ForMember(m => m.UserType, opt => opt.MapFrom(src => src.UserType + 1));
             CreateMap<UsersModel, User>().ForMember(m => m.UserType, opt => opt.MapFrom(src => src.UserType.Type - 1));
-            CreateMap<CandidatesModel[], IEnumerable<Candidate>>();
-            CreateMap<IEnumerable<Candidate>, CandidatesModel[]>();
+            CreateMap<List<Candidate>, List<Candidate>>();
+            CreateMap<List<Candidate>, List<Candidate>>();
             CreateMap<Skill[], IEnumerable<SkillSetModel>>();
             CreateMap<IEnumerable<SkillSetModel>, Skill[]>();
         }
